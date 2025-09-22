@@ -77,7 +77,6 @@ func main() {
 
 	flag.Parse()
 
-	// TODO: Add concurrency code
 	var openPorts []string
 	var closedPorts []string
 	address := os.Args[len(os.Args)-1]

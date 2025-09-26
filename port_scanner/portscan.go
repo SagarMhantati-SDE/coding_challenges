@@ -28,9 +28,7 @@ type Result struct {
 
 func Dial(address string, port *string, timeout *int, wg *sync.WaitGroup) int {
 	defer wg.Done()
-	fmt.Println("port:", *port)
 	server := fmt.Sprintf("%s:%s", address, *port)
-	fmt.Println("Server:", server)
 	_, err := net.DialTimeout("tcp", server, time.Duration(*timeout)*time.Second)
 	if err != nil {
 		return PORT_CLOSED
@@ -106,8 +104,7 @@ func main() {
 		TimeStamp:    time.Now(),
 	}
 
-	fmt.Printf("Elasped time: %s", endTime)
-	data, _ := json.Marshal(result)
+	data, _ := json.MarshalIndent(result, "", "   ")
 	fmt.Printf("data: %v", string(data))
 }
 

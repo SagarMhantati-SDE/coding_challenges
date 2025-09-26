@@ -1,12 +1,109 @@
-### What is port scanner?
-- Port scanner sends a network request to connect to specific TCP / UDP port on computer and records the response.
--  So what port scanner does is it sends the packet of network data to a port to check the current status. If you wanted to 
-   check to see if your web server was working correctly, you would check the status of port 80 on that server to make sure port is open and listining.
-- First `1023` TCP ports are well know ports reserved for applications like `FTP(21)`, `HTTP(80)`, `SSH(22)` and Internet Assigned Autority reserves these points to keep them standerized.
-- TCP ports `1024-49151` are available for use by services or applications and you can register them with IANA so they are considered semi reserved ports. Ports `49152` and higher are free to use.
+# Port Scanner
 
-### Port Scanning Basics:
-Port scanner sends UDP or TCP network data packet and asks ports about their current status. There types of response are below:
-1. Open, Accpeted: The computer responds and asks if there is anything it can do for you.
-2. Closed, Not listning: The computer responds that "The port is currently in use and unavilable at this time"
-3. Filtered, Dropped, Blocked: The computer even isn't bother to respond.
+A lightweight command-line **port scanner** that probes specific TCP/UDP ports on a target host and reports their status in a clean JSON output.
+
+---
+
+## ❓ What is a port scanner?
+
+A port scanner sends a network request to connect to a specific TCP or UDP port on a remote machine and records the response.  
+In short: it sends a packet to a port to check whether the service listening there is reachable.
+
+Example use case: to check whether a web server is running, probe port **80** on that server — if it’s open and listening, the server is likely up.
+
+---
+
+## 📚 Quick TCP port overview
+
+- **Well-known ports (0–1023)** — reserved for standard services such as:
+  - FTP (21), SSH (22), HTTP (80)
+  - These ports are standardized and assigned by IANA.
+- **Registered ports (1024–49151)** — available for services and applications (can be registered with IANA).
+- **Dynamic/private ports (49152–65535)** — generally free to use for ephemeral connections.
+
+---
+
+## ⚙️ Port scanning basics
+
+A port scanner sends either UDP or TCP packets and interprets the target’s replies. Typical responses:
+
+- **Open / Accepted** — the host responded and a service is listening (e.g., “anything I can do for you?”).
+- **Closed / Not listening** — the host replied but the port is not available for connections.
+- **Filtered / Dropped / Blocked** — no response (likely filtered by a firewall or dropped).
+
+---
+
+## 📌 Usage
+
+```bash
+./portscan -port=80,81,82,83,84 64.29.17.131
+```
+
+---
+
+## 🔍 Example
+
+**Input:**
+
+```bash
+./portscan -port=80,81,82,83,84 64.29.17.131
+```
+
+**Output:**
+
+```json
+data: {
+   "string": "64.29.17.131",
+   "ports_scanned": [
+      "80",
+      "81",
+      "82",
+      "83",
+      "84"
+   ],
+   "open_ports": [
+      "80"
+   ],
+   "closed_ports": [
+      "81",
+      "83",
+      "84",
+      "82"
+   ],
+   "elasped_time": "10s",
+   "timestamp": "2025-09-26T19:50:38.467338+05:30"
+}
+```
+
+> Note: The input and output above are preserved exactly as requested.
+
+---
+
+## ✨ Features
+- Scan arbitrary lists of ports (comma-separated).
+- Report open and closed ports in a simple JSON structure.
+- Show elapsed time and timestamp for traceability.
+- Minimal and fast — suitable for quick checks and automation.
+
+---
+
+## 🛠️ Build
+
+```bash
+go build -o portscan main.go
+```
+
+---
+
+## 🚀 Run
+
+```bash
+./portscan -port=80,81,82,83,84 64.29.17.131
+```
+
+---
+
+## 📄 License
+This project is licensed under the MIT License.
+
+---
